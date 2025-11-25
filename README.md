@@ -1,5 +1,5 @@
-# Ex05 Image Carousel
-## Date:1/11/2025
+# MWAD_EX05_image-carousel-in-react
+## Date:16.11.2025
 
 ## AIM
 To create a Image Carousel using React 
@@ -39,118 +39,152 @@ Use setInterval to call the nextImage() function at regular intervals.
 Clean up the interval when the component unmounts using clearInterval to prevent memory leaks.
 
 ## PROGRAM
-app.js
-```
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import img1 from './1.png';
-import img2 from './2.png';
 
-const images = [img1, img2];
+App.jsx
+
+```
+import { useState, useEffect } from "react";
+import "./App.css";
+import sun from "./sun.jpeg";
+import moon from "./moon.jpg";
+import earth from "./earth.jpg";
 
 function App() {
-  const [index, setIndex] = useState(0);
+  const images = [
+    { src: sun, alt: "Sun" },
+    { src: moon, alt: "Moon" },
+    { src: earth, alt: "Earth" },
+  ];
 
-  
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 3000); 
-
-   
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
-  
-  const showPrevious = () => {
-    setIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-  };
-
-  const showNext = () => {
-    setIndex((prevIndex) => (prevIndex + 1) % images.length);
-  };
-
- 
   return (
-    <div className="app">
-      <h1 className="title">Image Carousel</h1>
-      <div className="carousel">
-        <img src={images[index]} alt="Cars" className="carousel-image" />
+    <div className="carousel">
+        <h1>   Solar Carousel 🌞🌙🌍</h1>
+      <div className="image-container">
+        <img
+          src={images[currentIndex].src}
+          alt={images[currentIndex].alt}
+          className="fade"
+        />
       </div>
-      <div className="buttons">
-        <button onClick={showPrevious}>Previous</button>
-        <button onClick={showNext}>Next</button>
+      <div className="dots">
+        {images.map((_, index) => (
+          <span
+            key={index}
+            className={index === currentIndex ? "dot active" : "dot"}
+            onClick={() => setCurrentIndex(index)}
+          ></span>
+        ))}
       </div>
-      <footer className="footer">mohamed athif rahuman 212223220058</footer>
     </div>
   );
 }
 
 export default App;
 ```
-app.css
+App.css
+
 ```
-.app {
-  text-align: center;
-  margin-top: 40px;
-  background-color: #f0f4f8;  /* light background color */
-  width: 600px;               /* set fixed width */
-  height: 600px;              /* set fixed height */
-  margin-left: auto;          /* center horizontally */
-  margin-right: auto;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+/* Center everything on the page */
+.carousel {
+  background-color: #001f3f;
+  color: white;
+  height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-}
-
-.title {
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-.carousel {
-  width: 500px;
-  height: auto;
-  margin: 0 auto; /* centers the carousel horizontally */
+  justify-content: center; /* vertical center */
+  align-items: center; /* horizontal center */
+  text-align: center;
   overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 0 10px #aaa;
+  margin: 0;
 }
 
-.carousel-image {
+/* Title styling */
+.carousel h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Image box styling */
+.image-container {
+  width: 400px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+/* Image fit and animation */
+.image-container img {
   width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto; /* centers the image if needed */
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  transition: opacity 1s ease-in-out;
 }
 
-.buttons {
+/* Dot controls */
+.dots {
   margin-top: 20px;
 }
 
-button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  font-size: 1rem;
+.dot {
+  height: 12px;
+  width: 12px;
+  margin: 0 5px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-/* New footer style */
-.footer {
-  margin-top: 30px;
-  font-size: 1rem;
-  color: #555;
-  font-style: italic;
+.dot.active {
+  background-color: white;
+}
+
+.fade {
+  animation: fadeEffect 1s ease-in-out;
+}
+
+@keyframes fadeEffect {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Remove unwanted scroll bars or padding */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 ```
 
 ## OUTPUT
-![Screenshot 2025-05-25 105834](https://github.com/user-attachments/assets/2f2ad31a-4917-40fa-a5f4-bb03d628c337)
 
-![Screenshot 2025-05-25 105844](https://github.com/user-attachments/assets/2049e15e-5a6c-4b8a-8988-c04bbe5697be)
+<img width="1258" height="663" alt="image" src="https://github.com/user-attachments/assets/81bf2e11-f195-4578-b337-4baf7908be54" />
+
+<img width="1262" height="665" alt="image" src="https://github.com/user-attachments/assets/aec910d3-08d4-43f3-946f-009174aa3485" />
+
+<img width="1260" height="667" alt="image" src="https://github.com/user-attachments/assets/894b0807-ff7d-4f02-8890-358f61186c88" />
+
 
 ## RESULT
 The program for creating Image Carousel using React is executed successfully.
